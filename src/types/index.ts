@@ -3,6 +3,7 @@ export interface Board {
   id: string;
   title: string;
   columns: Column[];
+  isPublic?: boolean;
 }
 
 export interface Column {
@@ -19,6 +20,8 @@ export interface Task {
   columnId: string;
   boardId: string;
   comments: Comment[];
+  priority?: string;
+  tags?: string[];
 }
 
 export interface Comment {

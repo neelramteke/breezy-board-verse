@@ -5,7 +5,7 @@ import { Column } from "../types";
 import { useKanban } from "../contexts/KanbanContext";
 import TaskCard from "./TaskCard";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreHorizontal } from "lucide-react";
+import { Plus, MoreHorizontal, AlertTriangle, Tag } from "lucide-react";
 import {
   Dialog,
   DialogTrigger,
@@ -24,6 +24,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface KanbanColumnProps {
   column: Column;
@@ -33,6 +41,9 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ column }) => {
   const { createTask, updateColumn, deleteColumn, activeBoard } = useKanban();
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
+  const [newTaskPriority, setNewTaskPriority] = useState("medium");
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const [isAddTaskDialogOpen, setIsAddTaskDialogOpen] = useState(false);
   const [isEditColumnDialogOpen, setIsEditColumnDialogOpen] = useState(false);
   const [editColumnTitle, setEditColumnTitle] = useState(column.title);
@@ -43,9 +54,11 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ column }) => {
 
   const handleCreateTask = () => {
     if (newTaskTitle.trim() && activeBoard) {
-      createTask(column.id, activeBoard.id, newTaskTitle, newTaskDescription);
+      createTask(column.id, activeBoard.id, newTaskTitle, newTaskDescription, newTaskPriority, tags);
       setNewTaskTitle("");
       setNewTaskDescription("");
+      setNewTaskPriority("medium");
+      setTags([]);
       setIsAddTaskDialogOpen(false);
     }
   };
@@ -59,6 +72,17 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ column }) => {
 
   const handleDeleteColumn = () => {
     deleteColumn(column.id);
+  };
+
+  const addTag = () => {
+    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
   return (
@@ -140,6 +164,57 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ column }) => {
                   className="bg-muted border-muted text-white min-h-[100px]"
                   placeholder="Enter task description"
                 />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="task-priority">Priority</Label>
+                <Select value={newTaskPriority} onValueChange={setNewTaskPriority}>
+                  <SelectTrigger className="bg-muted border-muted text-white">
+                    <SelectValue placeholder="Select priority" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-popover border-muted text-white">
+                    <SelectItem value="low" className="text-blue-400">Low</SelectItem>
+                    <SelectItem value="medium" className="text-yellow-400">Medium</SelectItem>
+                    <SelectItem value="high" className="text-red-400">High</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label>Tags</Label>
+                <div className="flex gap-2 flex-wrap mb-2">
+                  {tags.map((tag, index) => (
+                    <Badge key={index} className="bg-muted hover:bg-muted/70 text-white flex items-center gap-1">
+                      {tag}
+                      <button 
+                        type="button"
+                        onClick={() => removeTag(tag)} 
+                        className="ml-1 text-xs opacity-70 hover:opacity-100"
+                      >
+                        ×
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+                <div className="flex">
+                  <Input
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    className="bg-muted border-muted text-white flex-1 rounded-r-none"
+                    placeholder="Add a tag"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addTag();
+                      }
+                    }}
+                  />
+                  <Button 
+                    type="button" 
+                    onClick={addTag} 
+                    className="rounded-l-none bg-muted-foreground hover:bg-muted-foreground/80"
+                  >
+                    Add
+                  </Button>
+                </div>
               </div>
             </div>
             <DialogFooter>
