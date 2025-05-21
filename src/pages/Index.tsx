@@ -6,11 +6,15 @@ import { DndContext, closestCenter } from "@dnd-kit/core";
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 
 const Index: React.FC = () => {
+  // Create a ref to store the context value
+  const kanbanContextRef = React.useRef<any>(null);
+
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
+    const kanbanContext = kanbanContextRef.current;
 
     // Make sure we have a valid over element
-    if (over && active.id !== over.id) {
+    if (over && active.id !== over.id && kanbanContext) {
       // Extract the task data from the active element
       const taskId = active.id;
       const sourceColumnId = active.data.current.task.columnId;
@@ -23,10 +27,6 @@ const Index: React.FC = () => {
       }
     }
   };
-
-  // Create a ref to store the context value
-  const kanbanContextRef = React.useRef<any>(null);
-  const kanbanContext = kanbanContextRef.current;
 
   return (
     <KanbanProvider>

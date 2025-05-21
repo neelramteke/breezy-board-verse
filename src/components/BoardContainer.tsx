@@ -1,7 +1,5 @@
 
 import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { useParams, Navigate } from "react-router-dom";
 import { useKanban } from "@/contexts/KanbanContext";
 import KanbanBoard from "@/components/KanbanBoard";
@@ -32,15 +30,13 @@ const BoardContainer: React.FC = () => {
   }
   
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="flex-1 overflow-hidden">
-        {activeBoard ? (
-          <KanbanBoard />
-        ) : (
-          <EmptyState />
-        )}
-      </div>
-    </DndProvider>
+    <div className="flex-1 overflow-hidden">
+      {activeBoard ? (
+        <KanbanBoard />
+      ) : (
+        <EmptyState />
+      )}
+    </div>
   );
 };
 
