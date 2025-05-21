@@ -16,13 +16,15 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/board/:boardId" element={<BoardView />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <KanbanProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/board/:boardId" element={<BoardView />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </KanbanProvider>
       </TooltipProvider>
     </BrowserRouter>
   </QueryClientProvider>
