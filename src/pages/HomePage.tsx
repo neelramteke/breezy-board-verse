@@ -175,19 +175,19 @@ const HomePage: React.FC = () => {
                     </DropdownMenu>
                   </div>
                   <CardDescription className="text-muted-foreground">
-                    {board.columns.length} columns, {board.columns.reduce((acc, col) => acc + col.tasks.length, 0)} tasks
+                    {board.columns?.length || 0} columns, {board.columns?.reduce((acc, col) => acc + (col.tasks?.length || 0), 0) || 0} tasks
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pb-2">
                   <div className="flex gap-2 flex-wrap">
-                    {board.columns.slice(0, 3).map((column) => (
+                    {(board.columns || []).slice(0, 3).map((column) => (
                       <div key={column.id} className="px-2 py-1 bg-muted/30 rounded text-xs text-muted-foreground">
-                        {column.title}: {column.tasks.length}
+                        {column.title}: {column.tasks?.length || 0}
                       </div>
                     ))}
-                    {board.columns.length > 3 && (
+                    {(board.columns?.length || 0) > 3 && (
                       <div className="px-2 py-1 bg-muted/30 rounded text-xs text-muted-foreground">
-                        +{board.columns.length - 3} more
+                        +{(board.columns?.length || 0) - 3} more
                       </div>
                     )}
                   </div>
