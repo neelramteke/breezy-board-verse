@@ -29,6 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Meteors } from "@/components/ui/meteors";
 
 const HomePage: React.FC = () => {
   const { boards, createBoard, deleteBoard, updateBoard, toggleBoardVisibility, isLoading } = useKanban();
@@ -139,7 +140,8 @@ const HomePage: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {boards.map((board) => (
-              <Card key={board.id} className="bg-kanban-column border-muted overflow-hidden group hover:border-muted-foreground transition-all duration-200">
+              <Card key={board.id} className="bg-kanban-column/30 backdrop-blur-sm border-muted overflow-hidden group hover:border-muted-foreground transition-all duration-200 relative">
+                <Meteors number={10} />
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-start">
                     <CardTitle className="text-white text-xl truncate max-w-[80%]">{board.title}</CardTitle>
