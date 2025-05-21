@@ -1,15 +1,13 @@
-
 import React from "react";
-import { FolderKanban, Home } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { useKanban } from "@/contexts/KanbanContext";
+import { FolderKanban } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const Header: React.FC = () => {
-  const { activeBoard } = useKanban();
-
+  const location = useLocation();
+  const isSharedBoard = location.pathname.startsWith('/board/') && new URLSearchParams(location.search).get('shared') === 'true';
+  
   return (
-    <header className="bg-kanban-darker py-4 px-6 text-white flex justify-between items-center shadow-md z-10">
+    <header className="bg-kanban-darker/30 backdrop-blur-md border-b border-white/10 py-4 px-6 text-white flex justify-between items-center shadow-md z-10">
       <div className="flex items-center space-x-2">
         <Link to="/" className="flex items-center space-x-2">
           <FolderKanban className="h-6 w-6 text-kanban-highlight" />
@@ -17,14 +15,14 @@ const Header: React.FC = () => {
         </Link>
       </div>
 
-      <div className="flex items-center space-x-4">
-        <Button asChild variant="ghost" className="text-md font-medium hover:bg-white/5 focus:bg-white/5">
-          <Link to="/">
-            <Home className="h-4 w-4 mr-1" />
-            Dashboard
-          </Link>
-        </Button>
-      </div>
+      {!isSharedBoard && location.pathname !== '/' && (
+        <Link 
+          to="/"
+          className="text-md font-medium hover:bg-white/5 focus:bg-white/5 px-4 py-2 rounded-md transition-colors"
+        >
+          Dashboard
+        </Link>
+      )}
     </header>
   );
 };
