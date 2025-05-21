@@ -1,7 +1,9 @@
+
 import React, { useState } from "react";
 import { useKanban } from "@/contexts/KanbanContext";
 import KanbanColumn from "./KanbanColumn";
 import { Button } from "@/components/ui/button";
+import { StarBorder } from "@/components/ui/star-border";
 import { Plus, Share2, Edit, Globe, Lock } from "lucide-react";
 import {
   Dialog,
@@ -93,13 +95,9 @@ const KanbanBoard: React.FC = () => {
         <div className="flex space-x-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                onClick={() => setIsShareDialogOpen(true)}
-                variant="outline"
-                className="border-muted hover:bg-muted"
-              >
+              <StarBorder as="button" onClick={() => setIsShareDialogOpen(true)} className="border-muted hover:bg-muted">
                 <Share2 className="h-4 w-4 mr-1" /> Share
-              </Button>
+              </StarBorder>
             </TooltipTrigger>
             <TooltipContent>
               <p>Generate a shareable link for this board</p>
@@ -108,9 +106,9 @@ const KanbanBoard: React.FC = () => {
 
           <Dialog open={isAddColumnDialogOpen} onOpenChange={setIsAddColumnDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-kanban-highlight hover:bg-kanban-accent text-black">
+              <StarBorder as="button" color="hsl(var(--kanban-highlight))">
                 <Plus className="h-4 w-4 mr-1" /> Add Column
-              </Button>
+              </StarBorder>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] bg-kanban-dark border-muted text-white">
               <DialogHeader>
@@ -129,13 +127,13 @@ const KanbanBoard: React.FC = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button
-                  type="submit"
+                <StarBorder
+                  as="button"
                   onClick={handleCreateColumn}
-                  className="bg-kanban-highlight text-black hover:bg-kanban-accent"
+                  color="hsl(var(--kanban-highlight))"
                 >
                   Create Column
-                </Button>
+                </StarBorder>
               </DialogFooter>
             </DialogContent>
           </Dialog>
@@ -169,12 +167,13 @@ const KanbanBoard: React.FC = () => {
                     value={activeBoard ? getShareableLink(activeBoard.id) : ""}
                     className="flex-1 bg-muted border-muted text-white"
                   />
-                  <Button 
+                  <StarBorder 
+                    as="button"
                     onClick={copyShareableLink}
-                    className="bg-kanban-highlight text-black hover:bg-kanban-accent"
+                    color="hsl(var(--kanban-highlight))"
                   >
                     {isCopied ? "Copied!" : "Copy"}
-                  </Button>
+                  </StarBorder>
                 </div>
                 
                 {!activeBoard.isPublic && (
@@ -205,13 +204,13 @@ const KanbanBoard: React.FC = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button
-                  type="submit"
+                <StarBorder
+                  as="button"
                   onClick={handleRenameBoard}
-                  className="bg-kanban-highlight text-black hover:bg-kanban-accent"
+                  color="hsl(var(--kanban-highlight))"
                 >
                   Rename Board
-                </Button>
+                </StarBorder>
               </DialogFooter>
             </DialogContent>
           </Dialog>

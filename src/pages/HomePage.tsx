@@ -1,9 +1,9 @@
-
 import React from "react";
 import { useKanban } from "@/contexts/KanbanContext";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { StarBorder } from "@/components/ui/star-border";
 import { Plus, FolderKanban, Share2, Lock, Globe } from "lucide-react";
 import {
   Card,
@@ -67,12 +67,14 @@ const HomePage: React.FC = () => {
         <div className="mb-8 flex justify-between items-center">
           <h1 className="text-3xl font-bold text-white">My Boards</h1>
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-            <Button 
+            <StarBorder 
+              as="button"
               onClick={() => setIsCreateDialogOpen(true)}
-              className="bg-kanban-highlight hover:bg-kanban-accent text-black"
+              color="hsl(var(--kanban-highlight))"
+              className="text-black"
             >
               <Plus className="h-4 w-4 mr-1" /> New Board
-            </Button>
+            </StarBorder>
             <DialogContent className="sm:max-w-[425px] bg-kanban-dark border-muted text-white">
               <DialogHeader>
                 <DialogTitle className="text-white text-xl">Create New Board</DialogTitle>
@@ -90,13 +92,14 @@ const HomePage: React.FC = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button
-                  type="submit"
+                <StarBorder
+                  as="button"
                   onClick={handleCreateBoard}
-                  className="bg-kanban-highlight text-black hover:bg-kanban-accent"
+                  color="hsl(var(--kanban-highlight))"
+                  className="text-black"
                 >
                   Create Board
-                </Button>
+                </StarBorder>
               </DialogFooter>
             </DialogContent>
           </Dialog>
@@ -124,12 +127,14 @@ const HomePage: React.FC = () => {
             <FolderKanban className="text-muted-foreground h-16 w-16 mb-4" />
             <h2 className="text-xl font-semibold text-white mb-2">No boards yet</h2>
             <p className="text-muted-foreground mb-4">Create your first Kanban board to get started</p>
-            <Button 
+            <StarBorder 
+              as="button"
               onClick={() => setIsCreateDialogOpen(true)}
-              className="bg-kanban-highlight hover:bg-kanban-accent text-black"
+              color="hsl(var(--kanban-highlight))"
+              className="text-black"
             >
               <Plus className="h-4 w-4 mr-1" /> Create Board
-            </Button>
+            </StarBorder>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -213,9 +218,9 @@ const HomePage: React.FC = () => {
                     )}
                   </div>
                   
-                  <Button asChild size="sm" className="bg-kanban-highlight hover:bg-kanban-accent text-black">
-                    <Link to={`/board/${board.id}`}>Open</Link>
-                  </Button>
+                  <StarBorder as={Link} to={`/board/${board.id}`} className="text-black" color="hsl(var(--kanban-highlight))">
+                    Open
+                  </StarBorder>
                 </CardFooter>
               </Card>
             ))}
@@ -240,13 +245,14 @@ const HomePage: React.FC = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button
-              type="submit"
+            <StarBorder
+              as="button"
               onClick={handleRenameBoard}
-              className="bg-kanban-highlight text-black hover:bg-kanban-accent"
+              color="hsl(var(--kanban-highlight))"
+              className="text-black"
             >
               Save Changes
-            </Button>
+            </StarBorder>
           </DialogFooter>
         </DialogContent>
       </Dialog>
