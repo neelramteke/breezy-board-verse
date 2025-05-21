@@ -1,20 +1,20 @@
 
-import React from "react";
-import { KanbanProvider } from "@/contexts/KanbanContext";
+import React, { useRef } from "react";
+import { KanbanProvider, useKanban } from "@/contexts/KanbanContext";
 import Dashboard from "./Dashboard";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 
-const Index: React.FC = () => {
-  // Create a ref to store the context value
-  const kanbanContextRef = React.useRef<any>(null);
+// Create a wrapper component that uses the KanbanContext
+const KanbanWrapper: React.FC = () => {
+  const kanbanContext = useKanban();
+  const { moveTask } = kanbanContext;
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
-    const kanbanContext = kanbanContextRef.current;
 
     // Make sure we have a valid over element
-    if (over && active.id !== over.id && kanbanContext) {
+    if (over && active.id !== over.id) {
       // Extract the task data from the active element
       const taskId = active.id;
       const sourceColumnId = active.data.current.task.columnId;
@@ -23,27 +23,26 @@ const Index: React.FC = () => {
       // Only move if the column ID is different
       if (sourceColumnId !== destinationColumnId) {
         // Call the moveTask function
-        kanbanContext.moveTask(taskId, sourceColumnId, destinationColumnId);
+        moveTask(taskId, sourceColumnId, destinationColumnId);
       }
     }
   };
 
   return (
+    <DndContext
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+      modifiers={[restrictToWindowEdges]}
+    >
+      <Dashboard />
+    </DndContext>
+  );
+};
+
+const Index: React.FC = () => {
+  return (
     <KanbanProvider>
-      {(contextValue: any) => {
-        // Store the context value in the ref
-        kanbanContextRef.current = contextValue;
-        
-        return (
-          <DndContext
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-            modifiers={[restrictToWindowEdges]}
-          >
-            <Dashboard />
-          </DndContext>
-        );
-      }}
+      <KanbanWrapper />
     </KanbanProvider>
   );
 };
