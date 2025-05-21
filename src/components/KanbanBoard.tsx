@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useKanban } from "@/contexts/KanbanContext";
 import KanbanColumn from "./KanbanColumn";
@@ -21,6 +20,7 @@ import {
   TooltipTrigger 
 } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 
 const KanbanBoard: React.FC = () => {
   const { activeBoard, createColumn, getShareableLink, updateBoard, toggleBoardVisibility } = useKanban();
